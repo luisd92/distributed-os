@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+        <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+        <script>
+		
+        var socket = io.connect("https://distributed-os-luisd92.c9users.io",{transports:['websocket', 'htmlfile']});
+        socket.on("serverSendingData", function(data) {
+			document.getElementById("divData").innerHTML+= data.message+"<br>" ;
+			document.getElementById("txtData").value= Math.random()*11;		console.log("SERVER SENT: "+data.message) ;
+        });
+	
+		function sendData() {
+			var data = document.getElementById("txtData").value;
+			socket.emit("clientSendingData", { message : data } );
+		}
+		
+		function dbToCSV() {
+			socket.emit("clientDBtoCSV" );
+		}
+        </script>
+		<div id="divData" height=100 width=300>DATA RECEIVED:<br></div>
+		<input id="txtData" type=text></input>
+		<button id="btnSend" onclick="sendData()">SEND</button>
+		<button id="btnSend" onclick="dbToCSV()">DB to CSV and HTML</button>
+</html>
